@@ -34,7 +34,7 @@ public class SalesDetailsImpl implements SalesDetailsService {
 	Logger log = LoggerFactory.getLogger(SalesDetailsRepository.class);
 
 	@Override
-	public boolean submitSalesDetails(SalesDetailsDto salesDetailsDto) {
+	public boolean submitSalesDetails(SalesDetailsDto salesDetailsDto, List<MultipartFile> uploadfileList) {
 
 		SalesDetails salesDetails = new SalesDetails();
 		salesDetails.setName(salesDetailsDto.getName());
@@ -45,34 +45,34 @@ public class SalesDetailsImpl implements SalesDetailsService {
 		salesDetails.setMobileNo(salesDetailsDto.getMobileNo());
 		salesDetails.setQuantity(salesDetailsDto.getQuantity());
 		salesDetails = salesDetailsRepository.save(salesDetails);
-//		try {
-//			for(MultipartFile uploadfile : uploadfileList) {
-//				String filename = uploadfile.getOriginalFilename();	
-//				filename = filename.replaceAll(" ", "");
-//				String directory = env.getProperty("netgloo.paths.uploadedFiles")+salesDetails.getId();
-//				File dir = new File(directory);
-//				dir.mkdir();
-//				String filepath = Paths.get(directory, filename).toString();	
-//				String path = "/image/"+salesDetails.getId();
-//				// =============Save the file locally====================
-//				BufferedOutputStream stream =
-//						new BufferedOutputStream(new FileOutputStream(new File(filepath)));
-//				stream.write(uploadfile.getBytes());
-//				stream.close();
-//
-//				FileUpload fileUpload = new FileUpload();
-//				fileUpload.setFileName(filename);
-//				fileUpload.setFilePath(path+filename);
-//				fileUpload.setFileType(uploadfile.getContentType());
-//				fileUpload.setSalesDetails(salesDetails);
-//				salesDetails = salesDetailsRepository.findById(salesDetails.getId()).orElse(null);
-//				fileUpload.setSalesDetails(salesDetails);
-//				fileRepository.save(fileUpload); 
-//			}}
-//		catch (Exception e) {
-//			System.out.println(e.getMessage());
-//
-//		}
+		try {
+			for(MultipartFile uploadfile : uploadfileList) {
+				String filename = uploadfile.getOriginalFilename();	
+				filename = filename.replaceAll(" ", "");
+				String directory = env.getProperty("netgloo.paths.uploadedFiles")+salesDetails.getId();
+				File dir = new File(directory);
+				dir.mkdir();
+				String filepath = Paths.get(directory, filename).toString();	
+				String path = "/image/"+salesDetails.getId();
+				// =============Save the file locally====================
+				BufferedOutputStream stream =
+						new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+				stream.write(uploadfile.getBytes());
+				stream.close();
+
+				FileUpload fileUpload = new FileUpload();
+				fileUpload.setFileName(filename);
+				fileUpload.setFilePath(path+filename);
+				fileUpload.setFileType(uploadfile.getContentType());
+				fileUpload.setSalesDetails(salesDetails);
+				salesDetails = salesDetailsRepository.findById(salesDetails.getId()).orElse(null);
+				fileUpload.setSalesDetails(salesDetails);
+				fileRepository.save(fileUpload); 
+			}}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+
+		}
 		return true;
 	}
 

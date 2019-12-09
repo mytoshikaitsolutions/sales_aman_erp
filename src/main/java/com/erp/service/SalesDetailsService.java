@@ -12,7 +12,7 @@ import com.erp.model.ShopName;
 
 public interface SalesDetailsService {
 
-	boolean submitSalesDetails(SalesDetailsDto salesDetailsDto);
+	boolean submitSalesDetails(SalesDetailsDto salesDetailsDto, List<MultipartFile> uploadfileList);
 
 	 List<SalesDetails> getSalesDetails(ShopName shopName, PaginationDto paginationDto);
 

@@ -40,9 +40,9 @@ public class SalesDetailsController {
 	}
 
 	@RequestMapping(value = "/submitSalesDetails", method = RequestMethod.POST)
-	public String submitSalesDetails(@RequestBody SalesDetailsDto salesDetailsDto) {
+	public String submitSalesDetails(SalesDetailsDto salesDetailsDto, @RequestParam("uploadfile") List<MultipartFile> uploadfileList) {
 		log.info("Start:: submitSalesDetails in SalesDetailsController for input data: {}", salesDetailsDto);
-		boolean salesDetails  = salesDetailsService.submitSalesDetails(salesDetailsDto);
+		boolean salesDetails  = salesDetailsService.submitSalesDetails(salesDetailsDto, uploadfileList);
 		if(salesDetails) 
 			return "successMessage:  Sales details submit successfully";  
 		else
@@ -72,7 +72,7 @@ public class SalesDetailsController {
 	}
 
 	@RequestMapping(value = "/updateSalesDetails/{id}", method = RequestMethod.PUT)
-	public String updateSalesDetails(SalesDetailsDto salesDetailsDto, @PathVariable Long id,@RequestParam("uploadfile")List<MultipartFile>uploadfileList) {
+	public String updateSalesDetails(SalesDetailsDto salesDetailsDto, @PathVariable Long id, @RequestParam("uploadfile") List<MultipartFile> uploadfileList) {
 
 		boolean updateDetails = salesDetailsService.updateSalesDetails(salesDetailsDto, id,uploadfileList);
 		if(updateDetails)
